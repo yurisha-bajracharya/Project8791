@@ -61,7 +61,7 @@ def bid():
     ####################################
 
     # return should have a single field value which should be an int reprsenting the bid value
-    return jsonify({"value": 3})
+    return jsonify({"value": -1})
 
 
 @app.route("/play", methods=["OPTIONS", "POST"])
@@ -91,7 +91,7 @@ def play():
     # which should be an int reprsenting the index of the card to play
     # e.g> {"value": body.cards.index("QS")}
     # to play the card "QS"
-    return jsonify({"value": 5})
+    return jsonify({"value": 0})
 
 
 # do not change this port; the sandbox server hits this port on localhost
