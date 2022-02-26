@@ -73,11 +73,11 @@ def bid():
                 bid += 1
             if 'S' in cards:
                 count_spades += 1
-            elif 'H' in cards:
+            if 'H' in cards:
                 count_hearts += 1
-            elif 'C' in cards:
+            if 'C' in cards:
                 count_clubs += 1
-            elif 'D' in cards:
+            if 'D' in cards:
                 count_diamonds += 1
     except:
         pass
