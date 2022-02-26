@@ -62,16 +62,37 @@ def bid():
     # print(json.dumps(body, indent=2))
     ####################################
     bid = 0
+    count_spades = 0
+    count_clubs = 0
+    count_diamonds = 0
+    count_hearts = 0
     try:
         cards = body["cards"]
         for i in cards:
             if i in Cards.winners:
                 bid += 1
-        print(bid)
+            if 'S' in cards:
+                count_spades += 1
+            elif 'H' in cards:
+                count_hearts += 1
+            elif 'C' in cards:
+                count_clubs += 1
+            elif 'D' in cards:
+                count_diamonds += 1
     except:
         pass
     #     Input your code here.        #
     ####################################
+    if count_clubs >= 4:
+        bid -= 1
+    if count_hearts >= 4:
+        bid -= 1
+    if count_diamonds >= 4:
+        bid -= 1
+    if count_diamonds <= 2 or count_clubs <= 2 or count_hearts <= 2:
+        if count_spades >= 5:
+            bid += 1
+
     # return should have a single field value which should be an int representing the bid value
     return jsonify({"value": bid})
 
