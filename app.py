@@ -92,6 +92,8 @@ def bid():
     if count_diamonds <= 2 or count_clubs <= 2 or count_hearts <= 2:
         if count_spades >= 5:
             bid += 1
+    if bid <= 0:
+        bid = 2
 
     # return should have a single field value which should be an int representing the bid value
     return jsonify({"value": bid})
