@@ -83,11 +83,11 @@ def bid():
         pass
     #     Input your code here.        #
     ####################################
-    if count_clubs >= 4:
+    if count_clubs >= 3:
         bid -= 1
-    if count_hearts >= 4:
+    if count_hearts >= 3:
         bid -= 1
-    if count_diamonds >= 4:
+    if count_diamonds >= 3:
         bid -= 1
     if count_diamonds <= 2 or count_clubs <= 2 or count_hearts <= 2:
         if count_spades >= 5:
