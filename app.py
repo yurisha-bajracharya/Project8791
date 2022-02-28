@@ -90,7 +90,7 @@ def bid():
         bid = 1
 
     # return should have a single field value which should be an int reprsenting the bid value
-    return jsonify({"value": 3})
+    return jsonify({"value": bid})
 
 
 @app.route("/play", methods=["OPTIONS", "POST"])
