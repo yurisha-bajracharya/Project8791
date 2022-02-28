@@ -1,11 +1,11 @@
-# This contains the basic code that you will need to view the game on the sandbox.
+# This contains the basic code that you will need to view the game on the snadbox.
 # You will provide all the moves of all the bots in the sandbox.
 # The sandbox is for testing purposes only so, the API data format can change
-# when qualifiers begin.
-# The sandbox is provided so that you can get familiar with building bots before
-#  the event actually begins.
+# when quelifiers begin.
+# The sandbox is provided so that you can get familiar with buliding bots before
+#  the event actually begings.
 
-# To setup: `pip install flask, flask_cors`
+# To seutp: `pip install flask, flask_cors`
 # To run: python app.py
 
 import json
@@ -17,14 +17,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-bid = 1
-played_cards = []
-
 
 @app.route("/bid", methods=["OPTIONS", "POST"])
 def bid():
     """
-    Bid is called at the starting phase of the game in call break.
+    Bid is called at the starting phase of the game in callbreak.
     You will be provided with the following data:
     {
         "matchId": "M1",
@@ -53,14 +50,11 @@ def bid():
         }
     }
 
-
-
     This is all the data that you will require for the bidding phase.
     """
 
     body = request.get_json()
-    # print(json.dumps(body, indent=2))
-    ####################################
+    print(json.dumps(body, indent=2))
     bid = 0
     count_spades = 0
     count_clubs = 0
@@ -95,8 +89,8 @@ def bid():
     if bid <= 0:
         bid = 1
 
-    # return should have a single field value which should be an int representing the bid value
-    return jsonify({"value": bid})
+    # return should have a single field value which should be an int reprsenting the bid value
+    return jsonify({"value": 3})
 
 
 @app.route("/play", methods=["OPTIONS", "POST"])
@@ -111,27 +105,33 @@ def play():
         "played": [
             "2H/0",
             "8H/0"
-        ]
+        ],
+        "history": [
+            [1, ["TS/0", "KS/0", "1S/0", "5S/0"], 3],
+            [3, ["QS/0", "6S/0", "TH/0", "2S/0"], 3],
+        ],
+        "players": ["P0", "P1", "P2", "P3"]
     }
-    The played field contains all the cards played this turn in order.
+    The `played` field contins all the cards played this turn in order.
+    'history` field contains an ordered list of cards played from first hand.
+    Format: `start idx, [cards in clockwise order of player ids], winner idx`
+        `start idx` is index of player that threw card first
+        `winner idx` is index of player who won this hand
+    `players`: list of ids in clockwise order (always same for a game)
     """
     body = request.get_json()
-    try:
-        played_cards.append(body["played"][-1][0:2])
-    except:
-        pass
-    # print(json.dumps(body))
+    print(json.dumps(body, indent=2))
+
     ####################################
     #     Input your code here.        #
     ####################################
 
     # return should have a single field value
-    # which should be an int representing the index of the card to play
+    # which should be an int reprsenting the index of the card to play
     # e.g> {"value": body.cards.index("QS")}
     # to play the card "QS"
-    return jsonify({"value": 0})
+    return jsonify({"value": 3})
 
 
 # do not change this port; the sandbox server hits this port on localhost
 app.run(port=7000)
-print(played_cards)

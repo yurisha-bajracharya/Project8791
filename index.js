@@ -72,16 +72,26 @@ function play(payload) {
   /*
   Play is called at every hand of the game where the user should throw a card.
   Request data format:
-  {
-    "matchId": "M1",
-    "playerId": "P1",
-    "cards": [ "QS", "9S", "2S", "KH", "JH", "4H", "JC", "9C", "7C", "6C", "8D", "6D", "3D"],
-    "played": [
-      "2H/0",
-      "8H/0"
-    ]
-  }
-  The played field contins all the cards played this turn in order.
+    {
+      "matchId": "M1",
+      "playerId": "P1",
+      "cards": [ "QS", "9S", "2S", "KH", "JH", "4H", "JC", "9C", "7C", "6C", "8D", "6D", "3D"],
+      "played": [
+        "2H/0",
+        "8H/0"
+      ],
+      "history": [
+        [3, ["QS/0", "6S/0", "TH/0", "2S/0"], 3],
+        [1, ["TS/0", "KS/0", "1S/0", "5S/0"], 3],
+      ],
+      "players": ["P0", "P1", "P2", "P3"]
+    }
+  The `played` field contins all the cards played this turn in order.
+    'history` field contains an ordered list of cards played from first hand.
+    Format: `start idx, [cards in clockwise order of player ids], winner idx`
+        `start idx` is index of player that threw card first
+        `winner idx` is index of player who won this hand
+    `players`: list of ids in clockwise order (always same for a game)
   */
   console.log('Returning play', payload);
 
