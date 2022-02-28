@@ -1,11 +1,11 @@
-# This contains the basic code that you will need to view the game on the snadbox.
+# This contains the basic code that you will need to view the game on the sandbox.
 # You will provide all the moves of all the bots in the sandbox.
 # The sandbox is for testing purposes only so, the API data format can change
-# when quelifiers begin.
-# The sandbox is provided so that you can get familiar with buliding bots before
-#  the event actually begings.
+# when qualifiers begin.
+# The sandbox is provided so that you can get familiar with building bots before
+#  the event actually begins.
 
-# To seutp: `pip install flask, flask_cors`
+# To set up: `pip install flask, flask_cors`
 # To run: python app.py
 
 import json
@@ -112,7 +112,7 @@ def play():
         ],
         "players": ["P0", "P1", "P2", "P3"]
     }
-    The `played` field contins all the cards played this turn in order.
+    The `played` field contains all the cards played this turn in order.
     'history` field contains an ordered list of cards played from first hand.
     Format: `start idx, [cards in clockwise order of player ids], winner idx`
         `start idx` is index of player that threw card first
@@ -120,6 +120,18 @@ def play():
     `players`: list of ids in clockwise order (always same for a game)
     """
     body = request.get_json()
+    cards = []  # list of cards in hand
+    played = []  # list of cards played this turn
+    history = []  # list of cards played from first hand
+    players = []  # list of player ids in clockwise order
+    try:
+        cards = body["cards"]
+        played = body["played"]
+        history = body["history"]
+        players = body["players"]
+    except:
+        pass
+
     print(json.dumps(body, indent=2))
 
     ####################################
@@ -127,7 +139,7 @@ def play():
     ####################################
 
     # return should have a single field value
-    # which should be an int reprsenting the index of the card to play
+    # which should be an int representing the index of the card to play
     # e.g> {"value": body.cards.index("QS")}
     # to play the card "QS"
     return jsonify({"value": 0})
