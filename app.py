@@ -130,7 +130,7 @@ def play():
     # which should be an int reprsenting the index of the card to play
     # e.g> {"value": body.cards.index("QS")}
     # to play the card "QS"
-    return jsonify({"value": 3})
+    return jsonify({"value": 0})
 
 
 # do not change this port; the sandbox server hits this port on localhost
