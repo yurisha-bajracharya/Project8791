@@ -10,6 +10,7 @@
 
 import json
 import Cards
+import CardSort
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -54,14 +55,16 @@ def bid():
     """
 
     body = request.get_json()
-    print(json.dumps(body, indent=2))
+    # print(json.dumps(body, indent=2))
     bid = 0
     count_spades = 0
     count_clubs = 0
     count_diamonds = 0
     count_hearts = 0
+    player = ""
     try:
         cards = body["cards"]
+        player = body["playerId"]
         for i in cards:
             if i in Cards.winners:
                 bid += 1
@@ -88,6 +91,7 @@ def bid():
             bid += 1
     if bid <= 0:
         bid = 1
+    print(player + str(bid))
 
     # return should have a single field value which should be an int reprsenting the bid value
     return jsonify({"value": bid})
@@ -129,14 +133,10 @@ def play():
         played = body["played"]
         history = body["history"]
         players = body["players"]
+        print(played)
+        print(CardSort.card_sort(cards))
     except:
         pass
-
-    print(json.dumps(body, indent=2))
-
-    ####################################
-    #     Input your code here.        #
-    ####################################
 
     # return should have a single field value
     # which should be an int representing the index of the card to play
