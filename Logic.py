@@ -1,6 +1,14 @@
 import Cards
 
 
+def get_plays(sign, played):
+    a = []
+    for i in played:
+        if sign in i:
+            a.append(i)
+    return a
+
+
 def cards_assigner(cards):
     """
     This function assigns cards of different suits to different lists and adds them to a dictionary.
@@ -78,13 +86,12 @@ def cards_assigner(cards):
     diamonds = ace_diamonds + king_diamonds + queen_diamonds + jack_diamonds + list(reversed(sorted(diamonds)))
     spades = ace_spades + king_spades + queen_spades + jack_spades + list(reversed(sorted(spades)))
     dictionary = {'clubs': clubs, 'hearts': hearts, 'diamonds': diamonds, 'spades': spades}
-    print(dictionary)
     return dictionary
 
 
 def card_sort(cards):
     """
-    This function sorts the cards in descending order.
+    This function sorts the cards in descending order. However, face cards are sorted in J K and Q format.
     """
     clubs = cards_assigner(cards)['clubs']
     spades = cards_assigner(cards)['spades']
@@ -117,10 +124,12 @@ def get_cards(card_name):
 
 def logic(played, cards, history):
     # This is the main logic of the game.
+    play = ''
     same = 0
     spades = []
     clubs = []
     diamonds = []
+    sign_match = []
     hearts = []
     total_cards = cards_assigner(cards)
     spades = total_cards['spades']
@@ -161,6 +170,8 @@ def logic(played, cards, history):
             play_sorted = card_sort(played_cards)
             total_played = card_sort(overall_history + played_cards)
             sign_of_the_card = played_cards[0][1]
+            sign_match = get_plays(sign_of_the_card, play_sorted)
+            sign_match = card_sort(sign_match)
             for c in cards:
                 if c[1] == sign_of_the_card:
                     playable.append(c)
@@ -174,4 +185,9 @@ def logic(played, cards, history):
                         playable = list(cards_arranged[-1])
                 same = 1
             if same == 0:
-                pass
+                playable = card_sort(playable)
+                for i in playable:
+                    if Cards.value[i] > Cards.value[sign_match[0]]:
+                        play = i
+            if play == '':
+                play = sign_match[-1]
