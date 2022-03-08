@@ -13,10 +13,18 @@ def cards_assigner(cards):
     ace_hearts = []
     ace_diamonds = []
     ace_spades = []
-    face_clubs = []
-    face_hearts = []
-    face_diamonds = []
-    face_spades = []
+    jack_clubs = []
+    jack_hearts = []
+    jack_diamonds = []
+    jack_spades = []
+    queen_clubs = []
+    queen_hearts = []
+    queen_diamonds = []
+    queen_spades = []
+    king_clubs = []
+    king_hearts = []
+    king_diamonds = []
+    king_spades = []
     sample = cards
     # Sort the cards in ascending order
     # and return the sorted list
@@ -24,42 +32,59 @@ def cards_assigner(cards):
         if a[1] == 'C':
             if a == '1C':
                 ace_clubs.append(a)
-            elif a == 'JC' or a == 'QC' or a == 'KC':
-                face_clubs.append(a)
+            elif a == 'JC':
+                jack_clubs.append(a)
+            elif a == 'QC':
+                queen_clubs.append(a)
+            elif a == 'KC':
+                king_clubs.append(a)
             else:
                 clubs.append(a)
         elif a[1] == 'H':
             if '1H' in a:
                 ace_hearts.append(a)
-            elif 'JH' in a or 'QH' in a or 'KH' in a:
-                face_hearts.append(a)
+            elif 'JH' in a:
+                jack_hearts.append(a)
+            elif 'QH' in a:
+                queen_hearts.append(a)
+            elif 'KH' in a:
+                king_hearts.append(a)
             else:
                 hearts.append(a)
         elif a[1] == 'D':
             if '1D' in a:
                 ace_diamonds.append(a)
-            elif 'JD' in a or 'QD' in a or 'KD' in a:
-                face_diamonds.append(a)
+            elif 'JD' in a:
+                jack_diamonds.append(a)
+            elif 'QD' in a:
+                queen_diamonds.append(a)
+            elif 'KD' in a:
+                king_diamonds.append(a)
             else:
                 diamonds.append(a)
         elif a[1] == 'S':
             if '1S' in a:
                 ace_spades.append(a)
-            elif 'JS' in a or 'QS' in a or 'KS' in a:
-                face_spades.append(a)
+            elif 'JS' in a:
+                jack_spades.append(a)
+            elif 'QS' in a:
+                queen_spades.append(a)
+            elif 'KS' in a:
+                king_spades.append(a)
             else:
                 spades.append(a)
-    clubs = ace_clubs + face_clubs + sorted(clubs)
-    hearts = ace_hearts + face_hearts + sorted(hearts)
-    diamonds = ace_diamonds + face_diamonds + sorted(diamonds)
-    spades = ace_spades + face_spades + sorted(spades)
+    clubs = ace_clubs + king_clubs + queen_clubs + jack_clubs + list(reversed(sorted(clubs)))
+    hearts = ace_hearts + king_hearts + queen_hearts + jack_hearts + list(reversed(sorted(hearts)))
+    diamonds = ace_diamonds + king_diamonds + queen_diamonds + jack_diamonds + list(reversed(sorted(diamonds)))
+    spades = ace_spades + king_spades + queen_spades + jack_spades + list(reversed(sorted(spades)))
     dictionary = {'clubs': clubs, 'hearts': hearts, 'diamonds': diamonds, 'spades': spades}
+    print(dictionary)
     return dictionary
 
 
 def card_sort(cards):
     """
-    This function sorts the cards in descending order. However, face cards are sorted in J K and Q format.
+    This function sorts the cards in descending order.
     """
     clubs = cards_assigner(cards)['clubs']
     spades = cards_assigner(cards)['spades']
@@ -92,6 +117,7 @@ def get_cards(card_name):
 
 def logic(played, cards, history):
     # This is the main logic of the game.
+    same = 0
     spades = []
     clubs = []
     diamonds = []
@@ -101,7 +127,7 @@ def logic(played, cards, history):
     clubs = total_cards['clubs']
     diamonds = total_cards['diamonds']
     hearts = total_cards['hearts']
-    playables = []
+    playable = []
     overall_history = []
     cards_arranged = card_sort(cards)
     for dash in history:
@@ -137,13 +163,15 @@ def logic(played, cards, history):
             sign_of_the_card = played_cards[0][1]
             for c in cards:
                 if c[1] == sign_of_the_card:
-                    playables.append(c)
-            if len(playables) < 1:
+                    playable.append(c)
+            if len(playable) < 1:
                 if spades != []:
                     playable = [spades[-1]]
                 else:
                     try:
-                        playables = list(i for i in cards if Cards.value[i] <= 5)
+                        playable = list(i for i in cards if Cards.value[i] <= 5)
                     except:
-                        playables = list(cards_arranged[-1])
-
+                        playable = list(cards_arranged[-1])
+                same = 1
+            if same == 0:
+                pass
