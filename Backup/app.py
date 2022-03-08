@@ -10,7 +10,7 @@
 
 import json
 
-
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -61,7 +61,7 @@ def bid():
     ####################################
 
     # return should have a single field value which should be an int reprsenting the bid value
-    return jsonify({"value": -1})
+    return jsonify({"value": 3})
 
 
 @app.route("/play", methods=["OPTIONS", "POST"])
@@ -81,7 +81,10 @@ def play():
     The played field contins all the cards played this turn in order.
     """
     body = request.get_json()
-    print(json.dumps(body, indent=2))
+    data = {'key': 'value'}
+    response = requests.post(url='http://localhost:5000/api/v1/play', json=body)
+    print(response)
+    # print(json.dumps(body, indent=2))
 
     ####################################
     #     Input your code here.        #

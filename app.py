@@ -1,17 +1,16 @@
-# This contains the basic code that you will need to view the game on the sandbox.
+# This contains the basic code that you will need to view the game on the snadbox.
 # You will provide all the moves of all the bots in the sandbox.
 # The sandbox is for testing purposes only so, the API data format can change
-# when qualifiers begin.
-# The sandbox is provided so that you can get familiar with building bots before
-#  the event actually begins.
+# when quelifiers begin.
+# The sandbox is provided so that you can get familiar with buliding bots before
+#  the event actually begings.
 
-# To set up: `pip install flask, flask_cors`
+# To seutp: `pip install flask, flask_cors`
 # To run: python app.py
 
 import json
 import Cards
-import CardSort
-
+from Logic import *
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -19,7 +18,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/bid", methods=["OPTIONS", "POST"])
+@app.route("/bid", methods=["POST"])
 def bid():
     """
     Bid is called at the starting phase of the game in callbreak.
@@ -56,29 +55,27 @@ def bid():
 
     body = request.get_json()
     # print(json.dumps(body, indent=2))
+
+    ####################################
     bid = 0
     count_spades = 0
     count_clubs = 0
     count_diamonds = 0
     count_hearts = 0
     player = ""
-    try:
-        cards = body["cards"]
-        player = body["playerId"]
-        for i in cards:
-            if i in Cards.winners:
-                bid += 1
-            if 'S' in cards:
-                count_spades += 1
-            if 'H' in cards:
-                count_hearts += 1
-            if 'C' in cards:
-                count_clubs += 1
-            if 'D' in cards:
-                count_diamonds += 1
-    except:
-        pass
-    #     Input your code here.        #
+    cards = body["cards"]
+    player = body["playerId"]
+    for i in cards:
+        if i in Cards.winners:
+            bid += 1
+        if 'S' in cards:
+            count_spades += 1
+        if 'H' in cards:
+            count_hearts += 1
+        if 'C' in cards:
+            count_clubs += 1
+        if 'D' in cards:
+            count_diamonds += 1
     ####################################
     if count_clubs >= 3:
         bid -= 1
@@ -91,13 +88,12 @@ def bid():
             bid += 1
     if bid <= 0:
         bid = 1
-    print(player + str(bid))
-
+    print(player + ': ' + str(bid))
     # return should have a single field value which should be an int reprsenting the bid value
-    return jsonify({"value": bid})
+    return jsonify({"value": 3})
 
 
-@app.route("/play", methods=["OPTIONS", "POST"])
+@app.route("/play", methods=["POST"])
 def play():
     """
     Play is called at every hand of the game where the user should throw a card.
@@ -116,7 +112,7 @@ def play():
         ],
         "players": ["P0", "P1", "P2", "P3"]
     }
-    The `played` field contains all the cards played this turn in order.
+    The `played` field contins all the cards played this turn in order.
     'history` field contains an ordered list of cards played from first hand.
     Format: `start idx, [cards in clockwise order of player ids], winner idx`
         `start idx` is index of player that threw card first
@@ -124,22 +120,22 @@ def play():
     `players`: list of ids in clockwise order (always same for a game)
     """
     body = request.get_json()
-    cards = []  # list of cards in hand
-    played = []  # list of cards played this turn
-    history = []  # list of cards played from first hand
-    players = []  # list of player ids in clockwise order
-    try:
-        cards = body["cards"]
-        played = body["played"]
-        history = body["history"]
-        players = body["players"]
-        print(played)
-        print(CardSort.card_sort(cards))
-    except:
-        pass
+    # print(json.dumps(body, indent=2))
 
+    ####################################
+    cards = body['cards']  # list of cards in hand
+    played = body['played']  # list of cards played this turn
+    history = body['history']  # list of cards played from first hand
+    players = body['playerId']  # list of player ids in clockwise order
+    """
+    print('CARDS: ' + str(cards))
+    print('HISTORY: ' + str(history))
+    print('PLAYED: ' + str(played))
+    ####################################
+    """
+    logic(played, cards, history)
     # return should have a single field value
-    # which should be an int representing the index of the card to play
+    # which should be an int reprsenting the index of the card to play
     # e.g> {"value": body.cards.index("QS")}
     # to play the card "QS"
     return jsonify({"value": 0})
