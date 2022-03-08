@@ -2,6 +2,9 @@ import Cards
 
 
 def cards_assigner(cards):
+    """
+    This function assigns cards of different suits to different lists and adds them to a dictionary.
+    """
     clubs = []
     hearts = []
     diamonds = []
@@ -55,6 +58,9 @@ def cards_assigner(cards):
 
 
 def card_sort(cards):
+    """
+    This function sorts the cards in descending order. However, face cards are sorted in J K and Q format.
+    """
     clubs = cards_assigner(cards)['clubs']
     spades = cards_assigner(cards)['spades']
     diamonds = cards_assigner(cards)['diamonds']
@@ -77,11 +83,15 @@ def card_sort(cards):
     return spades + list2
 
 
-def get_played_cards(card_name):
+def get_cards(card_name):
+    """
+    This function returns suitable name of player's cards. Like, it takes '1S/0' and returns '1S'.
+    """
     return card_name[0:2]
 
 
 def logic(played, cards, history):
+    # This is the main logic of the game.
     spades = []
     clubs = []
     diamonds = []
@@ -97,25 +107,31 @@ def logic(played, cards, history):
     for dash in history:
         overall_history += dash[1]
     history_sorted = card_sort(overall_history)
+    # When no players have played before you, i.e. your turn is in the first throw of any round.
     if played == []:
+        # When it's the first round
         if history == []:
             if '1S' in cards and 'KS' in cards and 'QS' in cards:
                 play = '1S'
             else:
                 play = card_sort(cards)[0]
+        # When it's not the first round
         elif history != []:
             """
             In this case tho, we need to have a list of the cards that have been played throughout the game.
             """
             pass
+    # When other players have played before you
     elif played != []:
+        # When it's the first round
         if history == []:
             """
             In this case tho, we need to have a list of the cards that have been played throughout the game.
             """
             pass
+        # When it's not the first round
         elif history != []:
-            played_cards = list(map(get_played_cards, played))
+            played_cards = list(map(get_cards, played))
             play_sorted = card_sort(played_cards)
             total_played = card_sort(overall_history + played_cards)
             sign_of_the_card = played_cards[0][1]
@@ -130,3 +146,4 @@ def logic(played, cards, history):
                         playables = list(i for i in cards if Cards.value[i] <= 5)
                     except:
                         playables = list(cards_arranged[-1])
+
