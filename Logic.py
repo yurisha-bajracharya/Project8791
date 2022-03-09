@@ -132,10 +132,13 @@ def logic(played, cards, history):
     diamonds = []
     sign_match = []
     hearts = []
+    remaining_sorted = []
+    sign_of_the_card = ''
     total_cards = cards_assigner(cards)
     spades = total_cards['spades']
     clubs = total_cards['clubs']
     diamonds = total_cards['diamonds']
+    sign_remains = []
     hearts = total_cards['hearts']
     playable = []
     applicable_remains = []
@@ -172,12 +175,14 @@ def logic(played, cards, history):
             played_cards = list(map(get_cards, played))  # Gets proper list of played card
             play_sorted = card_sort(played_cards)  # Sorts played cards
             total_played = card_sort(
-                list(map(get_cards, overall_history)) + played_cards)  # Gets overall history of cards that have been played
+                list(map(get_cards,
+                         overall_history)) + played_cards)  # Gets overall history of cards that have been played
             sign_of_the_card = played_cards[0][1]  # Gets the sign of the card that has been played
             sign_match = get_plays(sign_of_the_card,
                                    play_sorted)  # Gets the list of played cards that have the same sign as the played card
             sign_match = card_sort(sign_match)  # Sorts the sign_match list
-            remains = card_sort([z for z in Cards.cards if z not in total_played]) # Gets the list of cards that have not been played yet
+            remains = card_sort([z for z in Cards.cards if
+                                 z not in total_played and z not in cards])  # Gets the list of cards that have not been played yet
             sign_remains = cards_assigner(
                 remains)  # Gets a dictionary of the cards that have not been played yet with their respective signs
             applicable_remains = sign_remains[Cards.dict2[
@@ -194,14 +199,22 @@ def logic(played, cards, history):
                                     Cards.value[i] <= 5)  # If we don't have spades, we play cards of value 5 or less
                     if playable == []:
                         playable = list(
-                            cards_arranged[-1])  # If we don't have cards of value 5 or less, we play the lowest card
+                            cards_arranged[
+                                -1])  # If we don't have cards of value 5 or less, we play the lowest card that we have
                 same = 1
             if same == 0:
                 playable = card_sort(playable)  # If we have cards with same sign, we sort them
                 for i in playable:
-                    if Cards.value[i] > Cards.value[sign_match[0]]:
+                    if Cards.value[playable[0]] > Cards.value[sign_remains[Cards.dict2[sign_of_the_card]][0]] and len(
+                            sign_remains[Cards.dict2[
+                                sign_of_the_card]]) > 7:  # If we have highest valued card of any sign, and less than 7 of such signed card is played, we play the highest card we have
+                        play = playable[0]
+                    elif Cards.value[i] > Cards.value[sign_match[0]]:
                         # And play the card with exactly higher value than already played card with highest value
                         play = i
+            else:
+                play = playable[
+                    -1]  # If we do not have cards with same sign, we play the lowest spade card or lowest other card
             if play == '':
                 # If we don't have higher cards with same sign, we play the last card of the list, i.e. the lowest value card of same sign
                 play = sign_match[-1]
