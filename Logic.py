@@ -128,6 +128,7 @@ def logic(played, cards, history):
     same = 0
     spades = []
     clubs = []
+    remains = []
     diamonds = []
     sign_match = []
     hearts = []
@@ -137,8 +138,10 @@ def logic(played, cards, history):
     diamonds = total_cards['diamonds']
     hearts = total_cards['hearts']
     playable = []
+    applicable_remains = []
     overall_history = []
     cards_arranged = card_sort(cards)
+    total_played = []
     for dash in history:
         overall_history += dash[1]
     history_sorted = card_sort(overall_history)
@@ -169,11 +172,17 @@ def logic(played, cards, history):
             played_cards = list(map(get_cards, played))  # Gets proper list of played card
             play_sorted = card_sort(played_cards)  # Sorts played cards
             total_played = card_sort(
-                overall_history + played_cards)  # Gets overall history of cards that have been played
+                list(map(get_cards, overall_history)) + played_cards)  # Gets overall history of cards that have been played
             sign_of_the_card = played_cards[0][1]  # Gets the sign of the card that has been played
             sign_match = get_plays(sign_of_the_card,
                                    play_sorted)  # Gets the list of played cards that have the same sign as the played card
             sign_match = card_sort(sign_match)  # Sorts the sign_match list
+            remains = card_sort([z for z in Cards.cards if z not in total_played]) # Gets the list of cards that have not been played yet
+            sign_remains = cards_assigner(
+                remains)  # Gets a dictionary of the cards that have not been played yet with their respective signs
+            applicable_remains = sign_remains[Cards.dict2[
+                sign_of_the_card]]  # Gets the list of remaining cards that have the same sign as the played card
+            print(applicable_remains)
             for c in cards:
                 if c[1] == sign_of_the_card:
                     playable.append(c)  # Gets the list of cards that we have that have the same sign as the played card

@@ -26,3 +26,10 @@ hearts = ['1H', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', 'TH', 'JH', 'QH'
 num_values = {'1': 13, '2': 1, '3': 2, '4': 3, '5': 4, '6': 5, '7': 6, '8': 7, '9': 8, 'T': 9, 'J': 10, 'Q': 11,
               'K': 12}
 cardsort = [spades, clubs, diamonds, hearts]
+
+dict2 = {
+    'C': 'clubs',
+    'D': 'diamonds',
+    'H': 'hearts',
+    'S': 'spades'
+}
